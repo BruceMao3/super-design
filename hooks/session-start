@@ -1,0 +1,48 @@
+#!/bin/bash
+# Super Design session-start hook
+# Injects the super-design bootstrap skill into the session context
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Detect platform
+if [ -n "$CURSOR_SESSION" ] || [ -n "$CURSOR_TRACE_ID" ]; then
+  PLATFORM="cursor"
+elif [ -n "$CLAUDE_CODE_SESSION" ] || [ "$1" = "SessionStart" ]; then
+  PLATFORM="claude-code"
+else
+  PLATFORM="generic"
+fi
+
+# Read the bootstrap skill
+SKILL_FILE="$PLUGIN_DIR/source/skills/super-design/SKILL.md"
+if [ ! -f "$SKILL_FILE" ]; then
+  # Try dist location (installed plugin)
+  if [ "$PLATFORM" = "claude-code" ]; then
+    SKILL_FILE="$PLUGIN_DIR/.claude/skills/super-design/SKILL.md"
+  elif [ "$PLATFORM" = "cursor" ]; then
+    SKILL_FILE="$PLUGIN_DIR/.cursor/skills/super-design/SKILL.md"
+  fi
+fi
+
+if [ ! -f "$SKILL_FILE" ]; then
+  exit 0
+fi
+
+SKILL_CONTENT=$(cat "$SKILL_FILE")
+
+# Escape for JSON
+ESCAPED_CONTENT=$(echo "$SKILL_CONTENT" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))')
+
+# Output platform-specific format
+case "$PLATFORM" in
+  cursor)
+    echo "{\"additional_context\": $ESCAPED_CONTENT}"
+    ;;
+  claude-code)
+    echo "{\"hookSpecificOutput\": {\"hookEventName\": \"SessionStart\", \"additionalContext\": $ESCAPED_CONTENT}}"
+    ;;
+  *)
+    echo "{\"additionalContext\": $ESCAPED_CONTENT}"
+    ;;
+esac

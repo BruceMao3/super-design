@@ -1,0 +1,11 @@
+{
+  "name": "super-design",
+  "description": "Full-lifecycle design skills: research, extraction, prototyping, quality polishing, and development. 19 skills with human-in-the-loop workflow.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Bruce"
+  },
+  "repository": "",
+  "skills": "{{skills_path}}",
+  "hooks": "{{hooks_path}}"
+}

@@ -1,0 +1,8 @@
+{
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "command": "./hooks/session-start"
+    }
+  ]
+}

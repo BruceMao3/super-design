@@ -1,0 +1,13 @@
+{
+  "name": "super-design",
+  "version": "1.0.0",
+  "description": "Full-lifecycle design skills plugin with human-in-the-loop workflow",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:claude": "node scripts/build.js --provider claude-code",
+    "build:cursor": "node scripts/build.js --provider cursor"
+  },
+  "author": "Bruce",
+  "license": "MIT"
+}
