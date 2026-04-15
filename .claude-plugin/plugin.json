@@ -6,6 +6,5 @@
     "name": "Bruce"
   },
   "repository": "https://github.com/BruceMao3/super-design",
-  "skills": "./source/skills",
-  "hooks": "./hooks/hooks.json"
+  "skills": "./source/skills"
 }

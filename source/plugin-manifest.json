@@ -6,6 +6,5 @@
     "name": "Bruce"
   },
   "repository": "",
-  "skills": "{{skills_path}}",
-  "hooks": "{{hooks_path}}"
+  "skills": "{{skills_path}}"
 }
