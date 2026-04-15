@@ -1,8 +1,16 @@
 {
-  "hooks": [
-    {
-      "event": "SessionStart",
-      "command": "./hooks/session-start"
-    }
-  ]
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/session-start\"",
+            "async": false
+          }
+        ]
+      }
+    ]
+  }
 }

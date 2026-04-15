@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "super-design",
+  "metadata": {
+    "description": "Full-lifecycle design skills for AI coding agents. 20 skills with human-in-the-loop workflow."
+  },
+  "owner": {
+    "name": "Bruce"
+  },
+  "plugins": [
+    {
+      "name": "super-design",
+      "description": "Full-lifecycle design skills: research, extraction, prototyping, quality polishing, and development. 20 skills with human-in-the-loop workflow.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Bruce"
+      },
+      "source": "./",
+      "category": "design",
+      "tags": ["design", "frontend", "ui", "ux", "skills", "prototype", "figma"]
+    }
+  ]
+}
