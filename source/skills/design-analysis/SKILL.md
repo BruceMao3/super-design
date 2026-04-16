@@ -11,6 +11,8 @@ argument-hint: "[URL]"
 
 <IRON-LAW>
 THE OUTPUT MUST CONTAIN ALL 13 SECTIONS PLUS THE APPENDIX. NO SECTION MAY BE OMITTED. If a section cannot be determined, write "[Could not determine from source -- needs screenshot verification]" as the content. An incomplete spec is a failed spec.
+
+SCREENSHOT VERIFICATION IS MANDATORY. You MUST use Playwright to take per-screen screenshots of the target site and verify every visual description against the actual rendered page. A spec that was not screenshot-verified is a failed spec. Never skip Phase 4.
 </IRON-LAW>
 
 ## Goal
@@ -133,9 +135,9 @@ These are spec failures -- NEVER write them:
 
 ### Phase 1: Source Acquisition
 
-#### 源码获取（三层全自动策略）
+#### Source Acquisition (3-Layer Automatic Fallback)
 
-**第一层：curl + UA 伪装**（覆盖 70%+ 站点）
+**Layer 1: curl + UA spoofing** (covers 70%+ of sites)
 
 ```bash
 curl -s -L -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" \
@@ -144,28 +146,28 @@ curl -s -L -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.3
   <URL> > /home/claude/source.html
 ```
 
-**第二层：检测是否 CSR 空壳**
+**Layer 2: CSR empty shell detection**
 
-自动判断第一层结果是否够用：
+Automatically determine if Layer 1 result contains real content:
 
 ```bash
 SIZE=$(wc -c < /home/claude/source.html)
 BODY_CONTENT=$(grep -oP '(?<=<body)[^>]*>.*' /home/claude/source.html | head -c 3000)
 SCRIPT_RATIO=$(grep -c '<script' /home/claude/source.html)
 
-# 触发降级的条件（任一满足）：
-# 1. HTML 小于 5KB
-# 2. body 内容少于 500 字符（除 script 外）
-# 3. 检测到框架空壳标记：<div id="root"></div> / <div id="__next"></div> / <div id="app"></div> 且周围无内容
+# Trigger fallback if ANY condition is met:
+# 1. HTML smaller than 5KB
+# 2. Body content fewer than 500 characters (excluding scripts)
+# 3. Framework shell markers detected: <div id="root"></div> / <div id="__next"></div> / <div id="app"></div> with no surrounding content
 ```
 
-如果判定为 CSR 空壳 → 进入第三层
+If classified as CSR empty shell -> proceed to Layer 3.
 
-> **analysis 特殊规则：** analysis 依赖完整源码，三层策略必须跑到能拿到实质 DOM 为止。渲染后的 HTML 跟浏览器 DevTools 里的 DOM 等价。
+> **Analysis rule:** analysis requires complete source. The 3-layer strategy must run until substantive DOM is obtained. The rendered HTML is equivalent to what you see in browser DevTools.
 
-**第三层：headless 浏览器渲染**
+**Layer 3: Headless browser rendering**
 
-环境已有 node + npx，用 puppeteer 或 playwright 拿渲染后 DOM：
+Use puppeteer or playwright to get the fully rendered DOM:
 
 ```bash
 node -e "
@@ -181,11 +183,11 @@ const puppeteer = require('puppeteer');
 " > /home/claude/source.html
 ```
 
-如果 puppeteer 未安装，先 `npm install puppeteer` 或使用 playwright 的等价命令。
+If puppeteer is not installed, run `npm install puppeteer` first or use the playwright equivalent.
 
-**全部失败时的处理**
+**When all layers fail**
 
-三层都失败（极少见）→ 告知用户网站可能有反爬措施，询问是否可以手动提供 HTML。
+All three layers fail (rare) -> inform the user the site may have anti-scraping measures and ask if they can provide the HTML manually.
 
 ### Phase 2: Token Layer Auto-Extraction
 
@@ -242,37 +244,110 @@ Fill Sections 0, 8, 9, 11, 12:
 - DO: extract from patterns PRESENT
 - DON'T: infer from patterns ABSENT (this is the key insight source)
 
-### Phase 4: Screenshot Cross-Correction
+### Phase 4: Screenshot Cross-Correction (MANDATORY)
 
-Source code blind spots (must rely on screenshots):
-1. Font rendering form
-2. Lottie animation content
-3. Photo/image content
-4. Color palette atmosphere
-5. Multi-layer compositing effects
+<IRON-LAW>
+Phase 4 is NOT optional. You MUST take screenshots yourself using Playwright and verify every per-screen description against the actual rendered page. A spec without screenshot verification is a FAILED spec. Never skip this phase. Never mark sections as "[~80% accuracy]" when you have the ability to take screenshots.
+</IRON-LAW>
 
-With screenshot -> per-screen comparison -> update spec
-Without screenshot -> mark "[~80% accuracy -- no screenshot]" on visual sections
+#### Step 4.1: Per-Screen Screenshot Capture
+
+Use Playwright MCP to navigate to the target URL and capture screenshots screen by screen:
+
+1. Navigate to the URL with `browser_navigate`
+2. Take a screenshot of the initial viewport (`browser_take_screenshot`) — this is **[Screen 1]**
+3. Scroll down by one viewport height using `browser_evaluate` with `window.scrollBy(0, window.innerHeight)`
+4. Take the next screenshot — **[Screen 2]**
+5. Repeat scroll + screenshot until you reach the bottom of the page
+6. For pages with distinct route-based sections (e.g. tabs, modals), navigate to each and screenshot separately
+
+**Naming convention:** Label each screenshot as [Screen N] matching the Per-Screen Visual Description in Section 0.
+
+#### Step 4.2: Screenshot vs. Spec Comparison
+
+For EACH screenshot, compare against the corresponding [Screen N] description in Section 0 and the relevant Token Layer data (Sections 2-7). Check for:
+
+| Check | What to compare |
+|-------|----------------|
+| **Colors** | Do hex values in Section 3 match what's actually rendered? Background, text, accent colors. |
+| **Typography** | Do font sizes, weights, and families in Section 4 match the screenshot? |
+| **Layout** | Does the grid, spacing, and element positioning in Section 6 match? |
+| **Components** | Do button styles, card designs, nav patterns in Section 5 match? |
+| **Animation resting state** | Are the static frames of animations (Section 9) accurately described? |
+| **Visual atmosphere** | Does Section 2 mood/theme match what you actually see? |
+| **Content** | Are headlines, copy, images accurately captured in Section 0? |
+
+#### Step 4.3: Correction Loop
+
+For each discrepancy found:
+
+1. **Identify** the specific section and data point that's wrong
+2. **Correct** the spec with what the screenshot actually shows
+3. **Label** the correction with `[screenshot-corrected]` so the source is clear
+4. **Re-verify** — after corrections, take a fresh look at the screenshot to confirm the fix is accurate
+
+Source code blind spots that ONLY screenshots can catch:
+- Font rendering and actual typeface appearance
+- Lottie/animation content and visual form
+- Photo/image content and composition
+- Color palette atmosphere (computed colors vs. CSS variable values)
+- Multi-layer compositing and blend mode effects
+- Gradient rendering and actual color stops
+- Hover/active state visuals (use `browser_hover` / `browser_click` to trigger)
+
+#### Step 4.4: Interactive State Capture
+
+Beyond static screens, capture key interactive states:
+
+1. **Hover states** — hover over primary buttons, cards, nav items; screenshot each
+2. **Scroll-triggered animations** — scroll slowly through trigger zones; capture mid-animation frames
+3. **Navigation states** — open mobile menu, dropdowns, modals if present; screenshot each
+4. **Compare** each interactive state against Section 8 (Interaction Patterns) and Section 9 (Animation Choreography); correct discrepancies
+
+#### Step 4.5: Completion Gate
+
+Phase 4 is complete ONLY when:
+- [ ] Every [Screen N] in Section 0 has a corresponding screenshot taken and verified
+- [ ] Every discrepancy between source-based spec and screenshot has been corrected
+- [ ] All corrections are labeled `[screenshot-corrected]`
+- [ ] At least hover states of primary interactive elements have been captured and verified
+- [ ] No Section 0 description could surprise someone who then looks at the actual screenshot
 
 ### Phase 5: Self-Review
 
-**MANDATORY. Before presenting to user, verify:**
+**MANDATORY. Before presenting to user, verify ALL of the following:**
 
+#### Structure & Completeness
 - [ ] All 13 sections present with correct heading names
 - [ ] Section 0 has per-screen descriptions, not just overview
+- [ ] Appendix Quick Reference has all 5 fields filled with actual values
+
+#### Token Layer Precision
 - [ ] Section 3 has actual hex/oklch values, not color names
 - [ ] Section 4 has actual px/rem/clamp values, not "large/small"
 - [ ] Section 5 has CSS pseudo-code, not prose descriptions
+- [ ] Every color has a hex value
+- [ ] Every animation has a duration
+
+#### Experience Layer Quality
 - [ ] Section 8 has specific parameters (duration, easing, angles), not "smooth"
 - [ ] Section 9 has Lottie URLs if Lottie was detected
 - [ ] Section 11 DON'T list has at least 3 items inferred from ABSENT patterns
-- [ ] Appendix Quick Reference has all 5 fields filled with actual values
-- [ ] No generic praise anywhere (search: beautiful, nice, clean, modern, professional)
-- [ ] Every color has a hex value
-- [ ] Every animation has a duration
-- [ ] Information sources labeled [source] / [screenshot] / [inferred]
 
-**Can't check all boxes? Fix before presenting.**
+#### Screenshot Verification (NON-NEGOTIABLE)
+- [ ] Phase 4 was executed — screenshots were actively taken, not skipped
+- [ ] Every [Screen N] in Section 0 has been verified against an actual screenshot
+- [ ] Colors in Section 3 have been cross-checked against rendered screenshots
+- [ ] Typography in Section 4 has been cross-checked against rendered screenshots
+- [ ] At least primary hover/interactive states have been captured and verified
+- [ ] All screenshot-based corrections are labeled `[screenshot-corrected]`
+- [ ] No per-screen description would surprise someone viewing the actual page
+
+#### Language & Quality
+- [ ] No generic praise anywhere (search: beautiful, nice, clean, modern, professional)
+- [ ] Information sources labeled [source] / [screenshot] / [screenshot-corrected] / [inferred]
+
+**Can't check all boxes? Go back and fix before presenting. If screenshot boxes are unchecked, you MUST return to Phase 4 — do not proceed.**
 
 ### Phase 6: Present & Gate
 
@@ -311,4 +386,4 @@ Do NOT invoke any skill other than design-prototype from here.
 4. **Do's and Don'ts are hidden value.** Design essence is in "what was deliberately NOT done."
 5. **Quick Reference must be filled.** Highest-efficiency entry during generation.
 6. **No code generation.** Code is design-prototype's job.
-7. **源码获取是全自动的三层 fallback 链。** 第一层 curl 快速尝试，第二层检测 CSR 空壳，第三层 headless 渲染。不需要人介入，除非极端反爬情况。
+7. **Source acquisition is a fully automatic 3-layer fallback chain.** Layer 1 curl, Layer 2 CSR shell detection, Layer 3 headless rendering. No human intervention needed unless extreme anti-scraping.

@@ -104,9 +104,9 @@ These are output failures -- NEVER write them:
 
 ### Step 1: Quick Source Scan (2 min)
 
-#### 源码获取（三层全自动策略）
+#### Source Acquisition (3-Layer Automatic Fallback)
 
-**第一层：curl + UA 伪装**（覆盖 70%+ 站点）
+**Layer 1: curl + UA spoofing** (covers 70%+ of sites)
 
 ```bash
 curl -s -L -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" \
@@ -115,28 +115,28 @@ curl -s -L -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.3
   <URL> > /home/claude/source.html
 ```
 
-**第二层：检测是否 CSR 空壳**
+**Layer 2: CSR empty shell detection**
 
-自动判断第一层结果是否够用：
+Automatically determine if Layer 1 result contains real content:
 
 ```bash
 SIZE=$(wc -c < /home/claude/source.html)
 BODY_CONTENT=$(grep -oP '(?<=<body)[^>]*>.*' /home/claude/source.html | head -c 3000)
 SCRIPT_RATIO=$(grep -c '<script' /home/claude/source.html)
 
-# 触发降级的条件（任一满足）：
-# 1. HTML 小于 5KB
-# 2. body 内容少于 500 字符（除 script 外）
-# 3. 检测到框架空壳标记：<div id="root"></div> / <div id="__next"></div> / <div id="app"></div> 且周围无内容
+# Trigger fallback if ANY condition is met:
+# 1. HTML smaller than 5KB
+# 2. Body content fewer than 500 characters (excluding scripts)
+# 3. Framework shell markers detected: <div id="root"></div> / <div id="__next"></div> / <div id="app"></div> with no surrounding content
 ```
 
-如果判定为 CSR 空壳 → 进入第三层
+If classified as CSR empty shell -> proceed to Layer 3.
 
-> **essence 特殊规则：** essence 对源码完整性要求不高——只要能拿到 title、meta、主要文案和结构骨架就够。如果第一层已满足，跳过后续层。
+> **Essence rule:** essence does not require full source completeness -- as long as title, meta, main copy, and structural skeleton are obtained, that is sufficient. If Layer 1 already provides this, skip subsequent layers.
 
-**第三层：headless 浏览器渲染**
+**Layer 3: Headless browser rendering**
 
-环境已有 node + npx，用 puppeteer 或 playwright 拿渲染后 DOM：
+Use puppeteer or playwright to get the fully rendered DOM:
 
 ```bash
 node -e "
@@ -152,11 +152,11 @@ const puppeteer = require('puppeteer');
 " > /home/claude/source.html
 ```
 
-如果 puppeteer 未安装，先 `npm install puppeteer` 或使用 playwright 的等价命令。
+If puppeteer is not installed, run `npm install puppeteer` first or use the playwright equivalent.
 
-**全部失败时的处理**
+**When all layers fail**
 
-三层都失败（极少见）→ 告知用户网站可能有反爬措施，询问是否可以手动提供 HTML。
+All three layers fail (rare) -> inform the user the site may have anti-scraping measures and ask if they can provide the HTML manually.
 
 Only look at first 500 lines. Quickly identify:
 - Tech stack (Webflow? Next.js? React?)
@@ -233,7 +233,7 @@ Do NOT invoke any other skill. The ONLY valid next skill from design-essence is 
 1. **"Core Design Experience" is the soul of the report.** Other sections can be brief, this one must be thorough.
 2. **Find the thread.** Brand concept <-> interaction form unity. Find it and you've found the essence.
 3. **Fast.** 5 minutes. Don't get lost in technical details.
-7. **源码获取是全自动的三层 fallback 链。** 第一层 curl 快速尝试，第二层检测 CSR 空壳，第三层 headless 渲染。不需要人介入，除非极端反爬情况。
+7. **Source acquisition is a fully automatic 3-layer fallback chain.** Layer 1 curl, Layer 2 CSR shell detection, Layer 3 headless rendering. No human intervention needed unless extreme anti-scraping.
 4. **One metaphor beats ten descriptions.**
 5. **Give judgment.** Don't just describe, say whether it's worth going deeper.
 6. **Specificity over praise.** "calc(6vw + 6vh) fluid type" beats "beautiful typography."
