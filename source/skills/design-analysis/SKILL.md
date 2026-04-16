@@ -7,166 +7,127 @@ argument-hint: "[URL]"
 
 # Design Analysis -- Full-Stack Design Pattern Extraction
 
+**Announce at start:** "I'm using the design-analysis skill to do a full design extraction. This will produce a 13-section dual-layer spec."
+
+<IRON-LAW>
+THE OUTPUT MUST CONTAIN ALL 13 SECTIONS PLUS THE APPENDIX. NO SECTION MAY BE OMITTED. If a section cannot be determined, write "[Could not determine from source -- needs screenshot verification]" as the content. An incomplete spec is a failed spec.
+</IRON-LAW>
+
 ## Goal
 
 Input a website URL (optional screenshot), output a **dual-layer design spec**:
 
-- **Token Layer** (compatible with DESIGN.md format): palette, typography, components, layout, shadows, responsive -- usable for component-level generation
-- **Experience Layer** (unique capability): visual understanding, interaction patterns, animation choreography, design philosophy -- usable for page-level replication
+- **Token Layer**: palette, typography, components, layout, shadows, responsive
+- **Experience Layer**: visual understanding, interaction patterns, animation, design philosophy
 
 Quality standard: someone who has never seen the original site should have a 90%+ accurate mental picture after reading the spec.
 
-## Spec Output Structure (13 Sections)
+## Mandatory Spec Structure (13 Sections + Appendix)
+
+Every section below is REQUIRED. Use the EXACT heading names.
 
 ```markdown
 # [Site Name] - Design Spec
 
-=======================================
-Experience Layer
-=======================================
-
 ## Section 0: Visual Understanding
-
 ### Core Design Experience
-1-2 paragraphs summarizing the core design concept and most impressive interactions.
-Not "what exists" but "what it expresses" and "how it expresses it".
-Point out the unity between brand concept and interaction form.
+[1-2 paragraphs: core design concept + most impressive interactions.
+NOT "what exists" but "what it expresses" and "how."]
 
 ### Per-Screen Visual Description
-In scroll order, each screen marked [Screen N], describe:
+[In scroll order. Each screen marked [Screen N]. For each:
 - Background color and overall tone
 - Main visual elements (size, position, color, specific form)
 - Text content, font style, typographic approach
-- Interactive behavior (what triggers what effect)
+- Interactive behavior (what triggers what)
 - Animation effects (what moves, how, rhythm)
 
-Standard: **specific enough that an artist could paint from it.**
-BAD: "beautiful animation effects"
-GOOD: "at 30% scroll, blue block character slides in from right with ease-out 0.6s"
+Standard: **specific enough that an artist could paint from it.**]
 
 ### Overall Feeling
-One sentence: the feeling it gives + how it differentiates from similar sites.
+[One sentence: the feeling + differentiation from similar sites.]
 
 ## Section 1: Tech Stack
-| Layer | Choice | Identification basis |
-
-=======================================
-Token Layer
-=======================================
+[Table: Layer | Choice | Identification basis]
 
 ## Section 2: Visual Theme & Atmosphere
-- Design density: sparse / balanced / dense
-- Mood keywords: 3-5 (e.g., "warm, inclusive, playful, storybook feel")
-- Surface style: flat / micro-texture / skeuomorphic / glassmorphism
-- Color temperature: warm / cool / neutral / colorful
+[Design density | Mood keywords (3-5) | Surface style | Color temperature]
 
 ## Section 3: Color Palette & Roles
-| Semantic name | Value | Functional role | Usage context |
-If sections have different color schemes, list separately.
+[Table: Semantic name | Value | Functional role | Usage context
+If sections have different color schemes, list separately.]
 
 ## Section 4: Typography Rules
 ### Font Pairing
-- Display: [font-family] -- usage, style feel
-- Body: [font-family] -- usage, style feel
-
+[Display font + Body font with usage and style feel]
 ### Type Scale Table
-| Level | Size (clamp) | Weight | Spacing | Transform | Usage |
-| XXL   | clamp(x,y,z) | 900    | -0.02em | uppercase | Main heading |
-
+[Table: Level | Size (clamp) | Weight | Spacing | Transform | Usage]
 ### Special Typography Techniques
-- Large/small text on same line: specific approach
-- Scattered letter offsets/rotations: parameters
-- Inline elements (Lottie/icons) mixed with text: method
+[Any non-standard type treatment found]
 
 ## Section 5: Component Patterns
-Each component with four-state CSS pseudo-code:
-### Buttons
-### Cards
-### Navigation
-### Links/Anchors
-### Tags/Badges
-### Inputs (if any)
+[Each component with CSS pseudo-code for states:
+Buttons, Cards, Navigation, Links, Tags, Inputs]
 
 ## Section 6: Layout Principles
-- Grid: [columns], gap [value]
-- Spacing system: multiples of [base unit]
-- Max width: [value]
-- Whitespace philosophy: generous / compact / sectional
-- Section spacing pattern: full-screen / fixed-height / content-driven
+[Grid | Spacing system | Max width | Whitespace philosophy | Section spacing]
 
 ## Section 7: Depth & Elevation
-| Level | box-shadow | Usage |
-z-index strategy: [description]
-
-=======================================
-Experience Layer (continued)
-=======================================
+[Table: Level | box-shadow | Usage. Plus z-index strategy.]
 
 ## Section 8: Core Interaction Patterns
-Sorted by impact, each pattern includes:
-- **Pattern name** (e.g., "Kaleidoscope Rotation Carousel")
-- **User experience**: user does what -> sees what effect
-- **Implementation mechanism**: DOM + CSS + JS coordination
-- **Key parameters**: specific values (angles, duration, easing, thresholds)
-- **Design intent**: why this instead of something simpler
+[Sorted by impact. Each pattern:
+- Pattern name
+- User experience: user does X -> sees Y
+- Implementation: DOM + CSS + JS
+- Key parameters: specific values
+- Design intent: why this, not something simpler]
 
 ## Section 9: Animation Choreography
 ### Scroll-Driven
-| Trigger range | Effect | Pin | Duration |
-
+[Table: Trigger range | Effect | Pin | Duration]
 ### Lottie Animations
-| Position | JSON URL | Autoplay | Loop | Duration | Content description |
-
+[Table: Position | JSON URL | Autoplay | Loop | Duration | Content]
 ### Micro-interactions
-| Trigger | Effect | Parameters |
-
+[Table: Trigger | Effect | Parameters]
 ### Page Transitions
 ### Sound Bindings (if any)
 
 ## Section 10: Responsive Strategy
-- Breakpoints: [values]
-- Desktop -> Tablet: [changes]
-- Tablet -> Mobile: [changes]
-- Touch target minimum: [value]
-- Visibility switching strategy
+[Breakpoints | Desktop->Tablet changes | Tablet->Mobile changes | Touch targets | Visibility switching]
 
-=======================================
-Inference Layer
-=======================================
-
-## Section 11: Do's and Don'ts (Design Guardrails)
-
+## Section 11: Do's and Don'ts
 ### DO (what this site does)
-- [Positive rules extracted from actual patterns]
-
+[Rules extracted from actual patterns present]
 ### DON'T (what this site deliberately avoids)
-- [Negative rules inferred from ABSENT patterns]
-
-Inference logic:
-- No stock photos -> DON'T use generic stock imagery
-- No gradient backgrounds -> DON'T use gradients
-- No traditional grid -> DON'T use regular equal columns
-- No shadows -> DON'T rely on shadows for hierarchy
-- All uppercase text -> DO maintain uppercase transform
+[Rules inferred from ABSENT patterns -- key insight source]
 
 ## Section 12: Design Philosophy Summary
-- One-sentence core concept
-- Brand-interaction unity analysis
-- Reusable pattern priority table:
-  | Priority | Pattern | Reuse difficulty | Impact |
-
-=======================================
-Appendix
-=======================================
+[One-sentence core concept | Brand-interaction unity analysis |
+Reusable pattern priority table: Priority | Pattern | Difficulty | Impact]
 
 ## Appendix: Agent Quick Reference
-For quick lookup during generation:
 - 5-color shorthand: primary=#xxx, secondary=#xxx, accent=#xxx, bg=#xxx, text=#xxx
 - Font shorthand: display="xxx", body="xxx"
 - Size shorthand: radius=Xpx, spacing-unit=Xrem, max-width=Xpx
 - Shadow shorthand: default="x x x rgba(...)"
-- Style one-liner: "[e.g., interactive storybook style, warm and inclusive, hand-drawn SVG characters, kaleidoscope navigation]"
+- Style one-liner: "[description]"
 ```
+
+## No Placeholders Rule
+
+These are spec failures -- NEVER write them:
+
+- "Beautiful animation effects" / "Nice typography" (generic praise)
+- "Various interactive elements" (vague reference)
+- "Standard layout" / "Typical navigation" (non-descriptive)
+- "Appropriate spacing" / "Good contrast" (no specific values)
+- Any color described as "blue" or "green" without hex/oklch value
+- Any font size described as "large" or "small" without px/rem/clamp value
+- Any animation without duration and easing specified
+- "See screenshot" without also writing the description
+
+**Every data point must be specific.** "ease-out 0.6s" not "smooth animation." "#1a1a2e" not "dark blue."
 
 ## Extraction Process
 
@@ -179,105 +140,125 @@ curl -s -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" 
 
 ### Phase 2: Token Layer Auto-Extraction
 
-Systematically scan source, fill sections:
+Systematically scan source, fill Sections 2-7:
 
-**Colors:**
-- `var(--color-xxx)` / `var(--xxx)` CSS variables
-- Inline `fill="xxx"` / `background:` / `color:` values
-- Class semantic colors (`is-purple` / `bg-red`)
-- Organize into "semantic name + value + role" table
+**Colors (Section 3):**
+- `var(--color-xxx)` CSS variables
+- Inline `fill`, `background`, `color` values
+- Class semantic colors (`is-purple`, `bg-red`)
+- Organize into: semantic name + hex value + role + context
 
-**Typography:**
-- `font-family` declarations + Google Fonts `<link>`
+**Typography (Section 4):**
+- `font-family` + Google Fonts `<link>`
 - All `clamp()` / `font-size` values -> scale table
 - `font-weight` / `letter-spacing` / `line-height` / `text-transform`
 
-**Components:**
-- `<button>` / `.btn` complete style chains
-- `.card` or containers with `border-radius` + `box-shadow`
+**Components (Section 5):**
+- `<button>` / `.btn` style chains with transitions
+- `.card` containers with border-radius + shadow
 - `<nav>` / `<header>` structure
-- transition / hover parameters
 
-**Layout:**
+**Layout (Section 6):**
 - `grid-cols-` / `grid` / `gap`
-- Recurring padding/margin rem values
+- Recurring padding/margin values
 - `max-width` constraints
 
-**Depth:**
+**Depth (Section 7):**
 - All `box-shadow` values
-- `z-index` usage patterns
+- `z-index` usage
 
-**Responsive:**
+**Responsive (Section 10):**
 - `@media` breakpoints
-- Tailwind breakpoint classes
 - Visibility switching patterns
 
 ### Phase 3: Experience Layer Analysis
 
-Requires agent understanding and judgment:
+Fill Sections 0, 8, 9, 11, 12:
 
-**Visual Understanding Description:**
-- Based on Token Layer data, construct natural language per-screen descriptions
+**Visual Understanding (Section 0):**
+- Based on Token Layer data, construct per-screen descriptions
 - Standard: an artist could paint from it
 
-**Interaction Patterns:**
-- `data-*` attributes + JS references -> infer interaction behavior
-- Scroll-driven: pin containers (`height: xxxsvh` + `sticky`)
-- Drag: Draggable / `touch-action` / `cursor-grab`
-- 3D: `perspective` + `backface-hidden`
-- Mouse follow: `data-image-trail` / `data-sticker-cursor`
-- clipPath masking
+**Interaction Patterns (Section 8):**
+- `data-*` attributes + JS -> infer behavior
+- Scroll-driven: pin containers, sticky, height: xxxsvh
+- Drag, 3D, mouse follow, clipPath
 
-**Animation Choreography:**
-- Lottie: `data-src="xxx.json"` + `data-autoplay` + `data-loop`
-- CSS: `@keyframes` + `animation` properties
-- Scroll triggers: `data-w-id` + IX2 or ScrollTrigger
-- Transitions: `data-transition-link` structures
-- Sound: `<audio>` tags + `data-sound-*` bindings
+**Animation (Section 9):**
+- Lottie: `data-src`, `data-autoplay`, `data-loop`
+- CSS: `@keyframes` + `animation`
+- Scroll triggers, transitions, sound bindings
 
-**Do's and Don'ts:**
-- DO: extract from actual patterns
-- DON'T: infer from **absent** patterns (key insight source)
+**Do's and Don'ts (Section 11):**
+- DO: extract from patterns PRESENT
+- DON'T: infer from patterns ABSENT (this is the key insight source)
 
 ### Phase 4: Screenshot Cross-Correction
 
-**Source code blind spots** (must rely on screenshots):
-1. Font rendering form (compressed/expanded/handwritten feel)
-2. Lottie animation content (realistic/abstract/geometric blocks)
-3. Photo/image actual content
-4. Color palette overall atmosphere
+Source code blind spots (must rely on screenshots):
+1. Font rendering form
+2. Lottie animation content
+3. Photo/image content
+4. Color palette atmosphere
 5. Multi-layer compositing effects
 
-With screenshot -> per-screen comparison correction -> update spec
-Without screenshot -> mark "~80% accuracy" + list blind spot questions
+With screenshot -> per-screen comparison -> update spec
+Without screenshot -> mark "[~80% accuracy -- no screenshot]" on visual sections
 
-### Phase 5: Human-in-the-Loop
+### Phase 5: Self-Review
 
-Present the "Visual Understanding Description" and ask only:
+**MANDATORY. Before presenting to user, verify:**
 
-🧑 **Human Gate: "Does this description match what you see on the site? What's wrong?"**
+- [ ] All 13 sections present with correct heading names
+- [ ] Section 0 has per-screen descriptions, not just overview
+- [ ] Section 3 has actual hex/oklch values, not color names
+- [ ] Section 4 has actual px/rem/clamp values, not "large/small"
+- [ ] Section 5 has CSS pseudo-code, not prose descriptions
+- [ ] Section 8 has specific parameters (duration, easing, angles), not "smooth"
+- [ ] Section 9 has Lottie URLs if Lottie was detected
+- [ ] Section 11 DON'T list has at least 3 items inferred from ABSENT patterns
+- [ ] Appendix Quick Reference has all 5 fields filled with actual values
+- [ ] No generic praise anywhere (search: beautiful, nice, clean, modern, professional)
+- [ ] Every color has a hex value
+- [ ] Every animation has a duration
+- [ ] Information sources labeled [source] / [screenshot] / [inferred]
 
-1-2 rounds of correction to converge. Completion signal: user confirms description is accurate.
+**Can't check all boxes? Fix before presenting.**
 
-Then present the full spec section by section:
-- Token Layer sections: present as a group, ask for accuracy
-- Interaction Patterns: present each, ask if the behavior description is correct
-- Do's and Don'ts: present, ask if the inferences make sense
+### Phase 6: Present & Gate
 
-🧑 **Human Gate after each group: "Accurate? Anything to correct?"**
+Present the spec section by section. After EACH group, WAIT for confirmation:
 
-## Output Requirements
+**Group 1:** Section 0 (Visual Understanding)
+🧑 **Human Gate:** "Does this visual description match what you see? What's wrong?"
+WAIT. 1-2 rounds of correction.
 
-- Format: Markdown
-- Filename: `[domain]-design-spec.md`
-- Save to project directory
-- Present to user for review
+**Group 2:** Sections 1-7 (Tech + Token Layer)
+🧑 **Human Gate:** "Token data accurate? Any corrections?"
+WAIT.
+
+**Group 3:** Sections 8-10 (Experience Layer)
+🧑 **Human Gate:** "Interaction and animation descriptions correct?"
+WAIT.
+
+**Group 4:** Sections 11-12 + Appendix
+🧑 **Human Gate:** "Do's/Don'ts and philosophy make sense?"
+WAIT.
+
+After all groups confirmed:
+Save as `[domain]-design-spec.md`.
+🧑 **Human Gate:** "Spec saved. Generate a prototype from this spec?"
+
+- User says yes -> **REQUIRED:** Invoke design-prototype skill.
+- User says no -> end here. Do NOT invoke another skill.
+
+Do NOT invoke any skill other than design-prototype from here.
 
 ## Key Principles
 
-1. **Token Layer precise, Experience Layer vivid.** Color values must be exact; experience descriptions need insight.
-2. **Description is the quality gate.** If the description is wrong, the spec is useless no matter how detailed.
-3. **Label information sources.** Each key piece tagged [source] / [screenshot] / [inferred].
-4. **Do's and Don'ts are hidden value.** Design essence is often in "what was deliberately NOT done."
-5. **Agent Quick Reference must be filled.** This is the highest-efficiency entry point during generation.
-6. **No code generation.** Code is handled by design-prototype.
+1. **Token Layer precise, Experience Layer vivid.** Color values exact; experience descriptions insightful.
+2. **Description is the quality gate.** Wrong description = useless spec.
+3. **Label information sources.** [source] / [screenshot] / [inferred]
+4. **Do's and Don'ts are hidden value.** Design essence is in "what was deliberately NOT done."
+5. **Quick Reference must be filled.** Highest-efficiency entry during generation.
+6. **No code generation.** Code is design-prototype's job.

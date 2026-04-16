@@ -7,6 +7,12 @@ argument-hint: "[spec file path]"
 
 # Design Prototype -- Generate Prototype from Dual-Layer Spec
 
+**Announce at start:** "I'm using the design-prototype skill to generate a runnable prototype from the spec."
+
+<IRON-LAW>
+SPEC IS THE ONLY INPUT. Do NOT reference original site source code -- this validates spec quality. If the spec is insufficient, report what's missing and ask the user to update the spec, do NOT fill gaps by visiting the original site.
+</IRON-LAW>
+
 ## Goal
 
 Input a 13-section dual-layer design spec (from design-analysis or design-brainstorm), output a runnable frontend prototype (React JSX) that faithfully reproduces the core design patterns and visual experience.
@@ -209,37 +215,64 @@ Self-check after generation:
 - [ ] No console errors
 - [ ] Animations don't lag
 
+## Self-Review
+
+**MANDATORY. Before presenting prototype to user:**
+
+- [ ] Quick Reference colors used (exact hex from spec, or marked [derived])
+- [ ] Display + Body fonts from spec loaded via Google Fonts
+- [ ] Do's and Don'ts from Section 11 not violated (check each DON'T)
+- [ ] Core interaction from Section 8 is implemented and operable
+- [ ] Section-by-section color transitions match spec's per-screen description
+- [ ] No generic placeholder content (lorem ipsum only where spec lacks text)
+- [ ] No console errors
+- [ ] Responsive at basic level (clamp + flex-wrap)
+
+**Can't check all boxes? Fix before presenting.**
+
 ## Human-in-the-Loop
 
-After generation, present the prototype with:
+After generation, present the prototype with this EXACT format:
 
-```
-Core patterns implemented:
-1. [Pattern name] -- [one sentence]
+```markdown
+## Prototype Report
+
+### Core patterns implemented:
+1. [Pattern name] -- [one sentence describing implementation]
 2. ...
 
-Main gaps vs. original:
-1. [Gap] -- [reason]
+### Main gaps vs. spec:
+1. [Gap] -- [reason: tech limitation / time / complexity]
 2. ...
 
-To further refine, suggestions:
-1. [Next step]
+### Suggestions for refinement:
+1. [Specific next step]
 ```
 
-🧑 **Human Gate: "Does the prototype feel right? What needs adjustment?"**
+🧑 **Human Gate:** "Does the prototype feel right? What needs adjustment?"
 
-1-2 rounds of focused refinement. Focus on the specific issue the user identifies, don't re-generate everything.
+**WAIT for user response. Do NOT continue.**
+
+1-2 rounds of focused refinement. Fix the specific issue the user identifies. Do NOT re-generate everything.
+
+After user approves prototype:
+
+🧑 **Human Gate:** Present the Phase 3 Decision Gate (defined in super-design bootstrap):
+> **Prototype is ready. What's next?**
+> **A. Design polish first** | **B. Straight to development** | **C. Selective polish**
+
+**WAIT.** Route based on user choice. Do NOT choose for the user.
 
 ## Routing Rule
 
-If user provides a URL directly and asks to "replicate": suggest running design-analysis first to produce a spec. The spec is the quality bridge between analysis and generation.
+If user provides a URL directly and asks to "replicate": suggest running design-analysis first to produce a spec. Do NOT attempt to generate without a spec.
 
 ## Key Principles
 
-1. **Spec is the only input.** Don't reference original site source -- this validates spec quality.
-2. **Read Quick Reference before starting.** 5 colors + 2 fonts + style one-liner, 30 seconds to establish direction.
-3. **Do's and Don'ts throughout.** Whether it "feels right" is 80% determined by "what was NOT done."
+1. **Spec is the only input.** Don't reference original site source.
+2. **Read Quick Reference first.** 30 seconds to establish direction.
+3. **Do's and Don'ts throughout.** 80% of "feels right" is "what was NOT done."
 4. **Impact over completeness.** 3 polished sections > 10 rough sections.
 5. **SVGs are substitutes, not copies.** Same visual language, simplified geometry.
-6. **Honestly annotate gaps.** Tell user what was simplified and why.
-7. **Generate once, iterate from feedback.** First version runs the core patterns, subsequent versions add detail based on user feedback.
+6. **Honestly annotate gaps.** Tell user what was simplified.
+7. **WAIT at every gate.** Never auto-advance.

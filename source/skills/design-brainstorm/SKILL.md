@@ -7,6 +7,8 @@ argument-hint: "[idea or feature description]"
 
 # Design Brainstorm -- Original Design Through Collaborative Dialogue
 
+**Announce at start:** "I'm using the design-brainstorm skill to explore your design idea through dialogue."
+
 ## Goal
 
 Turn a vague idea into a fully formed 13-section design spec through structured human-in-the-loop dialogue. No reference website needed -- this is for original creation.
@@ -14,6 +16,17 @@ Turn a vague idea into a fully formed 13-section design spec through structured 
 <HARD-GATE>
 Do NOT write any code, scaffold any project, or take any implementation action until you have presented a design spec and the user has approved it. This applies to EVERY project regardless of perceived simplicity. The spec can be short for simple projects, but it MUST exist and be approved.
 </HARD-GATE>
+
+### Anti-Pattern: "This Is Too Simple To Need A Design"
+
+Every project goes through this process. A landing page, a single component, a config change -- all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The spec can be short, but it MUST exist.
+
+| Excuse | Reality |
+|--------|---------|
+| "It's just a landing page" | Landing pages have the most design decisions per square inch. |
+| "I already know what I want" | Then the spec will be fast to write. Still write it. |
+| "Let me just start coding" | Code without spec = rework. Every time. |
+| "The spec will slow us down" | The spec IS the acceleration. It prevents wrong turns. |
 
 ## Output Format
 
@@ -116,24 +129,33 @@ Save the validated design as a 13-section spec:
 
 ### Spec Self-Review
 
-After writing, check with fresh eyes:
+**MANDATORY. Before presenting spec to user:**
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections? Fix them.
-2. **Internal consistency:** Do sections contradict each other? Does Token Layer match Visual Understanding?
-3. **Scope check:** Focused enough for a single implementation plan?
-4. **Ambiguity check:** Could any requirement be interpreted two ways? Pick one, make it explicit.
+- [ ] All 13 sections present (thin is OK, empty is NOT)
+- [ ] Section 0 has visual description a stranger could picture
+- [ ] Section 3 has at least primary, bg, text color values (can be approximate for brainstorm)
+- [ ] Section 4 has font pairing identified (at least font names)
+- [ ] Section 11 has at least 3 DO and 3 DON'T rules
+- [ ] Appendix Quick Reference has all 5 fields
+- [ ] No "TBD", "TODO", or incomplete sections
+- [ ] No internal contradictions (Token Layer matches Visual Understanding)
+- [ ] Scope is single-implementation-plan sized
+- [ ] No ambiguous requirements (pick one interpretation, make it explicit)
 
-Fix issues inline. No need to re-review -- just fix and move on.
+**Can't check all boxes? Fix before presenting.**
 
 ### User Review Gate
 
-🧑 **Human Gate: "Spec written and saved to [path]. Please review it and let me know if you want changes before we proceed."**
+🧑 **Human Gate:** "Spec written and saved to `[path]`. Please review it and let me know if you want changes before we proceed."
 
-Wait for explicit approval. If changes requested, update and re-run self-review.
+**WAIT for explicit approval. Do NOT continue.**
+
+If changes requested -> update spec, re-run self-review, present again, WAIT again.
+Only proceed when user explicitly approves.
 
 ### Transition
 
-After spec is approved, present options:
+After spec is approved, present EXACTLY these options:
 
 > **Spec approved. Next step?**
 >
@@ -143,12 +165,30 @@ After spec is approved, present options:
 >
 > **C. Stop here** -- keep the spec for later use
 
+**WAIT for user choice. Do NOT proceed without explicit selection.**
+
+- User says A -> **REQUIRED:** Invoke design-prototype skill. Do NOT invoke any other skill.
+- User says B -> **REQUIRED:** Invoke design-plan skill. Do NOT invoke any other skill.
+- User says C -> END. Do NOT invoke any skill.
+
+## Red Flags -- STOP if you notice these
+
+- About to write code before spec is approved
+- About to skip a question because "the answer is obvious"
+- About to combine multiple questions in one message
+- About to skip a section because "it doesn't apply"
+- About to proceed without user response to a gate
+- Thinking "this is too simple for the full process"
+
+**All of these mean: STOP. Follow the process.**
+
 ## Key Principles
 
 1. **One question at a time** -- don't overwhelm with multiple questions
 2. **Multiple choice preferred** -- easier to answer than open-ended
-3. **YAGNI ruthlessly** -- remove unnecessary features from all designs
+3. **YAGNI ruthlessly** -- remove unnecessary features
 4. **Explore alternatives** -- always propose 2-3 approaches before settling
-5. **Incremental validation** -- present design, get approval before moving on
+5. **Incremental validation** -- present design, get approval, then move on
 6. **13-section output** -- always produce the standard spec format
 7. **No code before approval** -- the HARD-GATE is absolute
+8. **WAIT at every gate** -- never auto-advance

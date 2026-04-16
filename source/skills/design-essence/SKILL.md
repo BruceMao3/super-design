@@ -7,6 +7,12 @@ argument-hint: "[URL]"
 
 # Design Essence -- Quick Design Creativity Extraction
 
+**Announce at start:** "I'm using the design-essence skill to do a quick creative scan of this website."
+
+<IRON-LAW>
+THE OUTPUT MUST USE THE EXACT TEMPLATE BELOW. EVERY SECTION IS MANDATORY. NO SECTION MAY BE EMPTY, SKIPPED, OR MERGED WITH ANOTHER. If you cannot fill a section, write "[Could not determine -- reason]" instead of omitting it.
+</IRON-LAW>
+
 ## Goal
 
 Input a website URL (optional screenshot), output a **lightweight creativity report** in ~5 minutes answering:
@@ -18,51 +24,81 @@ Input a website URL (optional screenshot), output a **lightweight creativity rep
 
 No tokens, no CSS, no color tables. Just the essence.
 
-## Output Structure
+## Mandatory Output Template
+
+You MUST produce output in EXACTLY this structure. Every heading, every field.
 
 ```markdown
 # [Site Name] - Design Essence
 
-## Core Design Experience (most important)
+## Core Design Experience
 
 ### What It Expresses
-1-2 paragraphs:
-- Core idea/message of the site
-- What UNCONVENTIONAL method it uses to express that idea
-- How brand concept and interaction form are unified
-
-Quality standard:
-BAD: "This is a therapy site with lots of animation"
-GOOD: "The brand slogan is 'See life from a different angle',
-       and the hero's kaleidoscope rotation literally makes you
-       'rotate your angle' to see different worlds --
-       the navigation behavior IS the brand expression"
-
-Key: **Find the thread between brand concept and interaction form.**
+[1-2 paragraphs. MUST answer ALL THREE:]
+1. Core idea/message of the site
+2. What UNCONVENTIONAL method it uses to express that idea
+3. How brand concept and interaction form are unified ("the thread")
 
 ### What It Looks Like
-3-5 sentences describing the most memorable visual moments.
-Only what you'd remember with eyes closed.
+[3-5 sentences. ONLY what you'd remember with eyes closed. NO generic descriptions.]
 
-## Core Creativity (3-5 highlights)
+## Core Creativity
 
-### Creativity N: [Short Title]
-- **What**: One sentence
-- **Why it's good**: What problem it solves / what feeling it creates
-- **Brand unity**: Connected to brand concept or not
-- **Reusability**: High / Medium / Low (works with a different theme?)
+[3-5 highlights, each using this EXACT format:]
+
+### Creativity 1: [Short Title]
+- **What**: [One sentence]
+- **Why it's good**: [What problem it solves / what feeling it creates]
+- **Brand unity**: [Connected to brand concept or not -- explain]
+- **Reusability**: [High/Medium/Low -- works with a different theme?]
+
+### Creativity 2: [Short Title]
+[same 4 fields]
+
+### Creativity 3: [Short Title]
+[same 4 fields]
 
 ## Design Personality
 
-One metaphor:
+[EXACTLY one metaphor in this format:]
 "This site feels like [X] crossed with [Y]"
 
 ## Judgment
 
-- Replication value: High / Medium / Low
-- Most worth borrowing: [one pattern name]
-- Suggestion: [run design-analysis? borrow a specific pattern? just inspiration?]
+- **Replication value**: [High / Medium / Low]
+- **Most worth borrowing**: [one pattern name]
+- **Suggestion**: [run design-analysis? borrow a specific pattern? just inspiration?]
 ```
+
+### Output Quality Standards
+
+**"What It Expresses" quality gate:**
+
+| Quality | Example |
+|---------|---------|
+| BAD | "This is a therapy site with lots of animation" |
+| BAD | "A modern website with clean design and smooth transitions" |
+| GOOD | "The brand slogan is 'See life from a different angle', and the hero's kaleidoscope rotation literally makes you 'rotate your angle' to see different worlds -- the navigation behavior IS the brand expression" |
+
+If your "What It Expresses" reads like the BAD examples, DELETE IT and rewrite. Vague descriptions are plan failures.
+
+**"What It Looks Like" quality gate:**
+
+| Quality | Example |
+|---------|---------|
+| BAD | "Clean design with nice colors and good typography" |
+| GOOD | "Dark background, enormous white display type filling the viewport, a full-screen Lottie showing app UI animating with color against the darkness" |
+
+If your description could apply to 100 other websites, it's too vague. REWRITE.
+
+### No Placeholders Rule
+
+These are output failures -- NEVER write them:
+- "Beautiful design" / "Nice animation" / "Clean layout" (generic praise)
+- "Modern website" / "Well-crafted" / "Professional" (meaningless labels)
+- "Various interactive elements" / "Multiple sections" (vague references)
+- "Interesting use of..." without specifying WHAT and HOW
+- Any sentence without concrete visual or interaction detail
 
 ## Process
 
@@ -88,24 +124,23 @@ The core step -- find unity between brand concept and interaction form:
 2. Identify core interaction from source structure (what's unconventional)
 3. Ask yourself: **Is this interaction "performing" the brand concept?**
 
-Found it -> this is the core sentence of the design experience
-Can't find it -> the site may just be visually pretty but not deeply designed. Say so honestly.
+Found it -> this is the core sentence of the design experience.
+Can't find it -> say so honestly: "The site is visually polished but I couldn't find a deep connection between brand concept and interaction form."
 
 ### Step 3: Visual Perception (1 min)
 
-With screenshot -> look and write
+With screenshot -> look and write specific details
 Without screenshot -> infer from DOM + classes + SVG + alt text + color variables
 
-Only care about:
-- Overall color atmosphere
-- Most memorable visual element
-- Dynamic or static feeling
+Focus on:
+- Overall color atmosphere (specific: "dark bg with warm orange accents", not "nice colors")
+- Most memorable visual element (specific: "full-screen Lottie of app UI", not "animations")
+- Dynamic or static feeling (specific: "scroll-triggered text reveals", not "interactive")
 
 ### Step 4: Creativity Breakdown (1 min)
 
-Extract "why is this not ordinary":
+Extract "why is this not ordinary" using this checklist:
 
-**Common creativity type checklist:**
 - Navigation/switching innovation (kaleidoscope, flick cards, no-nav)
 - Typography extremes (oversized, scattered letters, mixed sizes, inline animation)
 - Animation-content coupling (scroll-driven, mouse-follow, physics engine)
@@ -114,15 +149,36 @@ Extract "why is this not ordinary":
 - Brand concept made tangible (slogan becomes interaction)
 - Counter-positioning (medical site that doesn't look medical)
 
-### Step 5: Present & Gate
+### Step 5: Self-Review
 
-Present the report (300-500 words). Every sentence carries information. No filler.
+**MANDATORY. Before presenting to user, check your output against this list:**
+
+- [ ] Every section of the template is present and filled
+- [ ] "What It Expresses" names the SPECIFIC brand concept, not a generic category
+- [ ] "What It Expresses" names the SPECIFIC interaction form, not "nice animations"
+- [ ] "What It Expresses" connects the two (the thread), or explicitly says it couldn't find one
+- [ ] "What It Looks Like" has concrete visual details a stranger could picture
+- [ ] Each Creativity item has all 4 fields filled (What, Why, Brand unity, Reusability)
+- [ ] Design Personality metaphor is specific, not generic ("TED talk x Snapchat" not "modern x clean")
+- [ ] Judgment section has all 3 fields
+- [ ] No vague praise anywhere (search for: beautiful, nice, clean, modern, well-crafted, professional)
+- [ ] Report is 300-500 words (not shorter, not much longer)
+
+**Can't check all boxes? Fix the output before presenting.**
+
+### Step 6: Present & Gate
+
+Present the report. Then:
 
 🧑 **Human Gate:** "Does this capture what you see? Is it worth going deeper with a full analysis?"
 
-- User says yes -> suggest running design-analysis
-- User says no / corrections -> revise the specific points, re-present
-- User says "just inspiration" -> end here
+**WAIT for user response. Do NOT continue.**
+
+- User says yes -> "I'll run design-analysis for a full extraction." Then **REQUIRED:** invoke design-analysis skill.
+- User says corrections -> revise the specific points, re-present, WAIT again.
+- User says "just inspiration" -> end here. Do NOT invoke another skill.
+
+Do NOT invoke any other skill. The ONLY valid next skill from design-essence is design-analysis.
 
 ## Key Principles
 
@@ -131,17 +187,4 @@ Present the report (300-500 words). Every sentence carries information. No fille
 3. **Fast.** 5 minutes. Don't get lost in technical details.
 4. **One metaphor beats ten descriptions.**
 5. **Give judgment.** Don't just describe, say whether it's worth going deeper.
-
-## Relationship to Other Skills
-
-```
-design-essence (quick scan, 5 min, grab essence)
-  | "worth going deeper"
-  v
-design-analysis (full extraction, 30 min, 13-section spec)
-  | spec output
-  v
-design-prototype (generate prototype from spec)
-```
-
-User can skip essence and go directly to analysis. They are progressive, not sequential.
+6. **Specificity over praise.** "calc(6vw + 6vh) fluid type" beats "beautiful typography."

@@ -7,7 +7,13 @@ argument-hint: "[intent or URL]"
 
 # Super Design
 
-Full-lifecycle design skill system. Routes to the right skill based on user intent, manages session state across conversations, and enforces human-in-the-loop at every decision point.
+**Announce at start:** "I'm using the super-design skill to route your request."
+
+Full-lifecycle design skill system. Routes to the right skill, manages session state, enforces human-in-the-loop at every decision point.
+
+<HARD-GATE>
+Do NOT execute any design work directly from this bootstrap skill. ALWAYS route to a specific sub-skill. This skill only does: routing, state management, direction tracking. If you find yourself writing analysis, generating code, or producing design content here, STOP -- you are in the wrong skill.
+</HARD-GATE>
 
 ## Session State
 
@@ -35,31 +41,44 @@ On session start, read `.super-design-state.json` from project root. If it exist
 
 Read the user's intent and route to the appropriate skill:
 
-| Signal | Route to |
-|--------|----------|
-| URL + "look at" / "what's good about" / "inspiration" | design-essence |
-| URL + "analyze" / "extract" / "teardown" | design-analysis |
-| URL + "replicate" / "clone" / "build something like" | design-analysis then design-prototype |
-| "Build X" / "Design X" / "Create X" (no reference URL) | design-brainstorm |
-| Has spec + "generate prototype" / "build it" | design-prototype |
-| Figma URL (figma.com/design/...) | figma-to-code |
-| "Review the design" / "critique" | design-critique |
-| "Fix typography" / "fix layout" / "fix colors" ... | Specific execution skill |
-| "Write a plan" / "implementation plan" | design-plan |
-| "Submit" / "finish" / "deliver" | design-finish |
+| Signal | Route to | Required action |
+|--------|----------|-----------------|
+| URL + "look at" / "what's good about" / "inspiration" | design-essence | **REQUIRED:** Invoke design-essence skill |
+| URL + "analyze" / "extract" / "teardown" | design-analysis | **REQUIRED:** Invoke design-analysis skill |
+| URL + "replicate" / "clone" / "build something like" | design-analysis then design-prototype | **REQUIRED:** Invoke design-analysis first |
+| "Build X" / "Design X" / "Create X" (no reference URL) | design-brainstorm | **REQUIRED:** Invoke design-brainstorm skill |
+| Has spec + "generate prototype" / "build it" | design-prototype | **REQUIRED:** Invoke design-prototype skill |
+| Figma URL (figma.com/design/...) | figma-to-code | **REQUIRED:** Invoke figma-to-code skill |
+| "Review the design" / "critique" | design-critique | **REQUIRED:** Invoke design-critique skill |
+| "Fix typography" / "fix layout" / "fix colors" ... | Specific execution skill | **REQUIRED:** Invoke the specific skill |
+| "Write a plan" / "implementation plan" | design-plan | **REQUIRED:** Invoke design-plan skill |
+| "Submit" / "finish" / "deliver" | design-finish | **REQUIRED:** Invoke design-finish skill |
 
-When intent is ambiguous, ask ONE clarifying question with options.
+When intent is ambiguous, ask ONE clarifying question with options. Do NOT guess.
 
 ## Human-in-the-Loop Protocol
+
+**THE IRON LAW: NO ADVANCING PAST A HUMAN GATE WITHOUT EXPLICIT USER CONFIRMATION.**
 
 Every skill in this system follows these rules:
 
 1. **Show before asking** -- present the output first, then ask for approval
 2. **One question per gate** -- never stack multiple decisions
 3. **Prefer options over open-ended** -- "A, B, or C?" beats "What do you think?"
-4. **Converge in 1-2 rounds** -- if feedback loops exceed 2 rounds, ask user to clarify the core issue
+4. **WAIT for response** -- after presenting a gate, STOP and WAIT. Do NOT continue. Do NOT assume approval.
 5. **Allow skipping** -- user says "skip" or "move on", respect it immediately
-6. **Never auto-advance past a gate** -- wait for explicit user confirmation
+6. **Never auto-advance** -- "looks good" from the agent is NOT user confirmation
+
+### Red Flags -- STOP if you notice these:
+
+- About to continue without user having responded to a gate
+- About to say "Great!" / "Looks good!" / "Moving on..." without user input
+- About to skip a section because "it's obvious"
+- About to merge two gates into one message
+- Thinking "the user probably wants me to continue"
+- Thinking "this gate is unnecessary for this case"
+
+**All of these mean: STOP. Present the gate. WAIT.**
 
 ## Phase 3 Decision Gate
 
@@ -73,14 +92,17 @@ After prototype is ready, present exactly these options:
 >
 > **C. Selective polish** -- Only fix specific aspects (e.g., just typography, just colors)
 
+WAIT for user choice. Do NOT proceed without explicit selection.
+
 If user chooses A:
-1. Run design-critique (review mode)
+1. **REQUIRED:** Invoke design-critique (review mode)
 2. Present issue list
-3. Ask which issues to fix
+3. WAIT for user to select which issues to fix
 4. Route to execution skills based on issue types
-5. After all accepted issues resolved OR user says done, run design-critique --verify
+5. After resolved OR user says done, **REQUIRED:** Invoke design-critique --verify
 
 If user chooses C:
+- WAIT for user to specify which aspects
 - Route directly to the named skill(s)
 
 ## Direction Management
@@ -96,24 +118,39 @@ When user requests a skill that conflicts with current direction:
 > [Requested skill] works in the opposite direction and may conflict with previous changes.
 > Switch direction? This may override some earlier work.**
 
-Wait for explicit confirmation before proceeding.
+WAIT for explicit confirmation before proceeding. "Yes" or "switch" required.
 
 ## Critique --verify Trigger
 
 Run `design-critique --verify` when ANY of these conditions is met (whichever comes first):
 
-1. `critique_issues.remaining` is empty (all accepted issues have been resolved by execution skills)
+1. `critique_issues.remaining` is empty (all accepted issues resolved)
 2. User explicitly says "done" / "verify now" / "all fixed"
-3. Bootstrap detects that `executed` list covers all skill types corresponding to accepted issues
+3. Bootstrap detects `executed` list covers all skill types corresponding to accepted issues
+
+## Skill Transition Rules
+
+Each skill has exactly ONE set of valid next skills:
+
+| Current Skill | Valid Next Skills | Routing |
+|--------------|------------------|---------|
+| design-essence | design-analysis, END | User chooses |
+| design-analysis | design-prototype, END | User chooses |
+| design-brainstorm | design-prototype, design-plan | User chooses |
+| design-prototype | design-critique, design-plan, END | Phase 3 Decision Gate |
+| figma-to-code | design-critique, design-plan, END | Phase 3 Decision Gate |
+| design-critique | execution skills, design-critique --verify | Bootstrap routes from issue list |
+| execution skills | design-critique --verify, next execution skill | Bootstrap routes |
+| design-plan | execution (subagent or inline) | User chooses |
+| design-review | design-finish | Direct |
+| design-finish | END | Terminal |
+
+Do NOT invoke skills outside these transitions. Do NOT skip steps.
 
 ## Skill Zones
 
-Skills are organized into zones with different rules:
-
 **Reference-Free Zone** (do NOT reference `reference/*.md` files):
 - design-essence, design-analysis, design-prototype, figma-to-code, design-brainstorm
-- These skills have their own internal DO/DON'T rules
-- The sole restriction is: no external design reference files
 
 **Process Control** (no design content output):
 - design-plan, design-review, design-finish
@@ -122,16 +159,3 @@ Skills are organized into zones with different rules:
 - Infrastructure: design-token, design-critique
 - Execution: design-typeset, design-layout, design-colorize, design-animate, design-distill, design-adapt
 - Quality: design-a11y, design-harden, design-audit
-
-## Execution Order (Suggested, Not Enforced)
-
-When running multiple polish skills after critique:
-
-```
-critique -> token -> typeset -> layout -> colorize/animate -> adapt -> a11y -> harden -> audit
-                                                               ^        |
-                                                               +--------+
-                                                          bounded loop (adapt-related items only)
-```
-
-User can reorder or skip as they wish.
