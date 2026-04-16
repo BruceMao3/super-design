@@ -104,17 +104,65 @@ These are output failures -- NEVER write them:
 
 ### Step 1: Quick Source Scan (2 min)
 
+#### 源码获取（三层全自动策略）
+
+**第一层：curl + UA 伪装**（覆盖 70%+ 站点）
+
 ```bash
-curl -s -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36" <URL> | head -500
+curl -s -L -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" \
+  -H "Accept: text/html,application/xhtml+xml" \
+  -H "Accept-Language: en-US,en;q=0.9" \
+  <URL> > /home/claude/source.html
 ```
+
+**第二层：检测是否 CSR 空壳**
+
+自动判断第一层结果是否够用：
+
+```bash
+SIZE=$(wc -c < /home/claude/source.html)
+BODY_CONTENT=$(grep -oP '(?<=<body)[^>]*>.*' /home/claude/source.html | head -c 3000)
+SCRIPT_RATIO=$(grep -c '<script' /home/claude/source.html)
+
+# 触发降级的条件（任一满足）：
+# 1. HTML 小于 5KB
+# 2. body 内容少于 500 字符（除 script 外）
+# 3. 检测到框架空壳标记：<div id="root"></div> / <div id="__next"></div> / <div id="app"></div> 且周围无内容
+```
+
+如果判定为 CSR 空壳 → 进入第三层
+
+> **essence 特殊规则：** essence 对源码完整性要求不高——只要能拿到 title、meta、主要文案和结构骨架就够。如果第一层已满足，跳过后续层。
+
+**第三层：headless 浏览器渲染**
+
+环境已有 node + npx，用 puppeteer 或 playwright 拿渲染后 DOM：
+
+```bash
+node -e "
+const puppeteer = require('puppeteer');
+(async () => {
+  const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] });
+  const page = await browser.newPage();
+  await page.goto('<URL>', { waitUntil: 'networkidle2', timeout: 30000 });
+  const html = await page.content();
+  console.log(html);
+  await browser.close();
+})();
+" > /home/claude/source.html
+```
+
+如果 puppeteer 未安装，先 `npm install puppeteer` 或使用 playwright 的等价命令。
+
+**全部失败时的处理**
+
+三层都失败（极少见）→ 告知用户网站可能有反爬措施，询问是否可以手动提供 HTML。
 
 Only look at first 500 lines. Quickly identify:
 - Tech stack (Webflow? Next.js? React?)
 - Animation libraries (GSAP? Lottie? None?)
 - Special interaction markers (`data-*` attributes)
 - Copy content (slogans, headlines, brand messaging)
-
-If curl returns 403, try web_fetch. Both fail: tell user.
 
 ### Step 2: Find "The Thread" (1 min)
 
@@ -185,6 +233,7 @@ Do NOT invoke any other skill. The ONLY valid next skill from design-essence is 
 1. **"Core Design Experience" is the soul of the report.** Other sections can be brief, this one must be thorough.
 2. **Find the thread.** Brand concept <-> interaction form unity. Find it and you've found the essence.
 3. **Fast.** 5 minutes. Don't get lost in technical details.
+7. **源码获取是全自动的三层 fallback 链。** 第一层 curl 快速尝试，第二层检测 CSR 空壳，第三层 headless 渲染。不需要人介入，除非极端反爬情况。
 4. **One metaphor beats ten descriptions.**
 5. **Give judgment.** Don't just describe, say whether it's worth going deeper.
 6. **Specificity over praise.** "calc(6vw + 6vh) fluid type" beats "beautiful typography."
