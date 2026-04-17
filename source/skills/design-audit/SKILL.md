@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design Audit -- Technical Quality Check
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Review the technical quality of frontend code. This is about engineering quality, not design quality (that's design-critique) or resilience (that's design-harden).

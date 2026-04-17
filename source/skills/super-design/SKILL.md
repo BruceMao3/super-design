@@ -11,6 +11,16 @@ argument-hint: "[intent or URL]"
 
 Full-lifecycle design skill system. Routes to the right skill, manages session state, enforces human-in-the-loop at every decision point.
 
+## Language Adaptation (GLOBAL RULE -- applies to ALL skills in this system)
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. If the user writes in Chinese, respond in Chinese. If in English, respond in English. If in Japanese, respond in Japanese. This applies to every skill routed from this system -- no exceptions.
+
+What stays in English: template heading names, field keys (e.g. "Creativity 1:", "What:", "Why it's good:"), code snippets, CSS values, technical identifiers.
+
+What MUST be in the user's language: all prose, descriptions, analysis, judgments, explanations, gate questions, suggestions, and any other natural-language content.
+</IRON-LAW>
+
 <HARD-GATE>
 Do NOT execute any design work directly from this bootstrap skill. ALWAYS route to a specific sub-skill. This skill only does: routing, state management, direction tracking. If you find yourself writing analysis, generating code, or producing design content here, STOP -- you are in the wrong skill.
 </HARD-GATE>

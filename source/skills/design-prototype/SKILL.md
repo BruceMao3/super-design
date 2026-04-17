@@ -13,6 +13,13 @@ argument-hint: "[spec file path]"
 SPEC IS THE ONLY INPUT. Do NOT reference original site source code -- this validates spec quality. If the spec is insufficient, report what's missing and ask the user to update the spec, do NOT fill gaps by visiting the original site.
 </IRON-LAW>
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Goal
 
 Input a 13-section dual-layer design spec (from design-analysis or design-brainstorm), output a runnable frontend prototype (React JSX) that faithfully reproduces the core design patterns and visual experience.

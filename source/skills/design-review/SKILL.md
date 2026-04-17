@@ -6,6 +6,13 @@ user-invocable: true
 
 # Design Review -- Two-Stage Code Review
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Review implemented code against the original design spec and engineering standards. Two stages: spec compliance first, code quality second. Spec compliance must pass before code quality review begins.

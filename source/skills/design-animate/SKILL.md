@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design Animate -- Purposeful Motion
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Add meaningful motion to a static UI. Consult [motion reference](../design-critique/reference/motion-design.md) for principles.

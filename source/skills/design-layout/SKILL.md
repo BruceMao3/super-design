@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design Layout -- Spacing & Layout Correction
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Fix layout and spacing issues in existing UI. Consult [spatial design reference](../design-critique/reference/spatial-design.md) for principles.

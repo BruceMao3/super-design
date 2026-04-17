@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design A11y -- Accessibility Review & Fix
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Comprehensive accessibility review and remediation. This is a standalone skill, not bundled with other quality checks. A11y is complex enough to deserve dedicated focus.

@@ -6,6 +6,13 @@ user-invocable: true
 
 # Design Finish -- Delivery Workflow
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Final step in the design lifecycle. Verify everything is ready, then execute the user's chosen delivery action.

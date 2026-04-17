@@ -7,6 +7,13 @@ argument-hint: "[source: code|spec]"
 
 # Design Token -- Token Extraction & Management
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Extract, organize, and maintain a unified design token system. Tokens are the single source of truth for visual decisions -- colors, typography, spacing, shadows, motion. Execution skills (typeset, layout, colorize, etc.) consume these tokens.

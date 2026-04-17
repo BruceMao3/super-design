@@ -7,6 +7,13 @@ argument-hint: "[--verify]"
 
 # Design Critique -- Design Quality Review
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Review an existing UI against design quality standards. Produce a prioritized issue list. Do NOT execute fixes -- that's the job of execution skills (typeset, layout, colorize, etc.). Critique only diagnoses.

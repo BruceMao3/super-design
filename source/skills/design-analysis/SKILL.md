@@ -15,6 +15,12 @@ THE OUTPUT MUST CONTAIN ALL 13 SECTIONS PLUS THE APPENDIX. NO SECTION MAY BE OMI
 SCREENSHOT VERIFICATION IS MANDATORY. You MUST use Playwright to take per-screen screenshots of the target site and verify every visual description against the actual rendered page. A spec that was not screenshot-verified is a failed spec. Never skip Phase 4.
 </IRON-LAW>
 
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names, field keys, and technical identifiers stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Goal
 
 Input a website URL (optional screenshot), output a **dual-layer design spec**:

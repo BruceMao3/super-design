@@ -7,6 +7,13 @@ argument-hint: "[spec file path]"
 
 # Design Plan -- Implementation Planning
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Write comprehensive implementation plans from an approved design spec. Plans assume the implementing engineer has zero context for the codebase. Document everything: which files to touch, complete code, how to test. Bite-sized tasks, DRY, YAGNI, frequent commits.

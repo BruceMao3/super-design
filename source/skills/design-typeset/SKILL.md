@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design Typeset -- Typography Correction
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Fix typography issues in existing UI. Consult [typography reference](../design-critique/reference/typography.md) for principles.

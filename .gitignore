@@ -2,3 +2,4 @@ dist/
 node_modules/
 .super-design-state.json
 .DS_Store
+CLAUDE.md

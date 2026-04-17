@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design Distill -- Ruthless Simplification
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Strip a UI down to its essence. Remove everything that doesn't directly serve the user's task. This is the opposite of adding polish -- it's about subtraction.

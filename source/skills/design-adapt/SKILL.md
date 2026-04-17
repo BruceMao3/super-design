@@ -7,6 +7,13 @@ argument-hint: "[target component or page]"
 
 # Design Adapt -- Responsive Adaptation
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Overview
 
 Make a UI work well across devices and viewports. Not just "shrink it" -- adapt the interface for different contexts. Consult [responsive reference](../design-critique/reference/responsive-design.md) for principles.

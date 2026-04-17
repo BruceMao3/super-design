@@ -7,6 +7,13 @@ argument-hint: "[Figma URL]"
 
 # Figma to Code -- Figma MCP Design-to-Code Pipeline
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Goal
 
 Input a Figma URL, output production-ready frontend code by leveraging the Figma MCP protocol for pixel-accurate design data extraction.

@@ -13,6 +13,12 @@ argument-hint: "[URL]"
 THE OUTPUT MUST USE THE EXACT TEMPLATE BELOW. EVERY SECTION IS MANDATORY. NO SECTION MAY BE EMPTY, SKIPPED, OR MERGED WITH ANOTHER. If you cannot fill a section, write "[Could not determine -- reason]" instead of omitting it.
 </IRON-LAW>
 
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys (e.g. "Creativity 1:", "What:", "Reusability:") stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Goal
 
 Input a website URL (optional screenshot), output a **lightweight creativity report** in ~5 minutes answering:

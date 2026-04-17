@@ -9,6 +9,13 @@ argument-hint: "[idea or feature description]"
 
 **Announce at start:** "I'm using the design-brainstorm skill to explore your design idea through dialogue."
 
+
+## Language Adaptation
+
+<IRON-LAW>
+ALL user-facing output MUST match the user's input language. Template heading names and field keys stay in English. All prose, descriptions, analysis, and judgments MUST be in the user's language.
+</IRON-LAW>
+
 ## Goal
 
 Turn a vague idea into a fully formed 13-section design spec through structured human-in-the-loop dialogue. No reference website needed -- this is for original creation.
